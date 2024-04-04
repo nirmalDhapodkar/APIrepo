@@ -7,7 +7,6 @@ import pickle
 import joblib
 from sklearn.tree import DecisionTreeRegressor
 
-model = joblib.load('learn_model.pkl')
 
 def mktimestmp():
     current_time = datetime.datetime.now()

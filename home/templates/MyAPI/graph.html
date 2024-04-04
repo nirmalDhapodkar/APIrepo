@@ -1,0 +1,89 @@
+{% extends 'MyAPI/basic.html' %}
+
+{% block main %}
+<section>
+    <div class = graph><canvas id="myChart"></canvas></div>
+    <div class = info></div>
+</section>
+{% endblock %}
+
+{% block script%}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+    // Initialize empty arrays to store data
+    let xData = [];
+    let yData = [];
+
+    // Get canvas element and context
+    let ctx = document.getElementById('myChart').getContext('2d');
+
+    // Create initial Chart instance
+    let myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: xData,
+            datasets: [{
+                label: 'Predicted',
+                data: yData,
+                borderColor: 'green',
+                backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                borderWidth: 1,
+                fill: true
+            }]
+        },
+        options: {
+            scales: {
+                xAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Finish Time'
+                    }
+                }],
+                yAxes: [{
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Predicted'
+                    }
+                }]
+            }
+        }
+    });
+
+    // Define a function to fetch data from the backend
+    function fetchData() {
+        fetch('/fetch/')
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+                return response.json();
+            })
+            .then(data => {
+                // Handle successful response
+                console.log(data);
+                // Add received data to arrays
+                xData.push(data.FinishTime);
+                yData.push(data.Predicted);
+                // Limit arrays to keep only the last 10 data points
+                if (xData.length > 15) {
+                    xData.shift();
+                    yData.shift();
+                }
+                // Update chart
+                myChart.update();
+            })
+            .catch(error => {
+                // Handle error
+                console.error('Error fetching data:', error);
+            });
+    }
+
+    // Call fetchData initially
+    fetchData();
+
+    // Set up interval to fetch data every 5 minutes (300,000 milliseconds)
+    setInterval(fetchData, 10000); // 300,000 ms = 5 min
+});
+
+</script>
+{% endblock %}
