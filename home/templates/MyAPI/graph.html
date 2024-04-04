@@ -1,9 +1,11 @@
 {% extends 'MyAPI/basic.html' %}
 
 {% block main %}
-<section>
+<section class="main">
     <div class = graph><canvas id="myChart"></canvas></div>
-    <div class = info></div>
+    <div class = info>
+        <h2>info</h2>
+    </div>
 </section>
 {% endblock %}
 
@@ -26,7 +28,7 @@
                 label: 'Predicted',
                 data: yData,
                 borderColor: 'green',
-                backgroundColor: 'rgba(255, 0, 0, 0.1)',
+                backgroundColor: 'rgba(0, 255, 34, 0.2)',
                 borderWidth: 1,
                 fill: true
             }]

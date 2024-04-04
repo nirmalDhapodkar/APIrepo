@@ -6,11 +6,9 @@ from . import mltool
 def mySite(request):
     return render(request, 'MyAPI/graph.html')
 
-def myForm():
-    return 0
+def About():
+    return render(request, "MyAPI/about.html")
 
-def status():
-    return 0
 
 def fetchAPI(request):
     predictions = mltool.generate_jdict()
